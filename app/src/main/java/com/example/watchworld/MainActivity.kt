@@ -46,6 +46,7 @@ fun MainContent() {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             webViewClient = WebViewClient()
+            settings.javaScriptEnabled = true
             settings.apply {
                 // Set initial scale to 100%
                 loadWithOverviewMode = true
@@ -53,6 +54,7 @@ fun MainContent() {
                 setSupportZoom(true)
                 builtInZoomControls = true
                 displayZoomControls = false
+
             }
             loadUrl(url)
         }
