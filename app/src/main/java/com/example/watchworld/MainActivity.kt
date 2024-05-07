@@ -1,7 +1,9 @@
 package com.example.watchworld
 
 import android.os.Bundle
+import android.view.ViewGroup
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,14 +21,14 @@ import com.example.watchworld.ui.theme.WatchWorldTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             WatchWorldTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    WebPage("https://spiley.pythonanywhere.com/")
+                    MainContent()
                 }
             }
         }
@@ -34,14 +36,26 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun WebPage(url: String) {
-    AndroidView(
-//        modifier = Modifier.fillMaxSize(),
-        factory = { context ->
-            WebView(context).apply {
-                // Load the website URL
-                loadUrl(url)
+fun MainContent() {
+    val url = "https://spiley.pythonanywhere.com/"
+
+    AndroidView(factory = { context ->
+        WebView(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            webViewClient = WebViewClient()
+            settings.apply {
+                // Set initial scale to 100%
+                loadWithOverviewMode = true
+                useWideViewPort = true
+                setSupportZoom(true)
+                builtInZoomControls = true
+                displayZoomControls = false
             }
+            loadUrl(url)
         }
-    )
+    })
 }
+
