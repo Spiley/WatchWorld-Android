@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.watchworld"
+    namespace = "com.WatchWorld"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.watchworld"
+        applicationId = "com.WatchWorld"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
