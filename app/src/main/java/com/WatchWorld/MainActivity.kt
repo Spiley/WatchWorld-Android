@@ -15,9 +15,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.WatchWorld.ui.theme.WatchWorldTheme
 
-
-
 class MainActivity : ComponentActivity() {
+    private lateinit var webView: WebView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -33,31 +33,37 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@Composable
-fun MainContent() {
-    val url = "https://spiley.pythonanywhere.com/"
+    @Composable
+    fun MainContent() {
+        val url = "https://spiley.pythonanywhere.com/"
 
-    AndroidView(factory = { context ->
-        WebView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            webViewClient = WebViewClient()
-            settings.javaScriptEnabled = true
-            settings.apply {
-                // Set initial scale to 100%
-                loadWithOverviewMode = true
-                useWideViewPort = true
-                setSupportZoom(true)
-                builtInZoomControls = true
-                displayZoomControls = false
-
+        AndroidView(factory = { context ->
+            WebView(context).apply {
+                webView = this
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                webViewClient = WebViewClient()
+                settings.javaScriptEnabled = true
+                settings.apply {
+                    loadWithOverviewMode = true
+                    useWideViewPort = true
+                    setSupportZoom(true)
+                    builtInZoomControls = true
+                    displayZoomControls = false
+                }
+                loadUrl(url)
             }
-            loadUrl(url)
-        }
-    })
-}
+        })
+    }
 
+    override fun onBackPressed() {
+        if (this::webView.isInitialized && webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+}
